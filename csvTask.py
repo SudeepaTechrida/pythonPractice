@@ -5,43 +5,40 @@ class Music:
     @staticmethod 
     def createCSV(name):
         file = open(name, 'a')
-
+ 
     def addDetails(self, data):
         file = open(self.name, 'a')
         file.write(",".join(data)+"\n")
         file.close()
         print("Music added.")
     def readDetails(self):
-        detail = []
         file = open(self.name, 'r')
-        details = file.read()
-        for line in details:
-            split1 = line.strip().split(",")
-            detail.append(split1)
-        return detail
-    
-    def editDetails(self, dataId):
-        data =  self.readDetails()
-        value = data[dataId]
-        return value
+        details = file.readlines()
+        return details 
+
     def update(self, data,dataId):
-        editData = self.editDetails(dataId)
+        editData = self.readDetails()
+        # print(editData)
         if 0 <= dataId < len(editData):
             editData[dataId] = data
+            print(editData[dataId])
             file = open(self.name, 'a+')
-            file.write(','.join(data)+'/n')
-            return True
-        return False
+            file.write(data)
+            file.write("\n")
+            # return True
+        return False   
+
     def delete(self, deleteID):
-        deleteData = self.editDetails(int(deleteID))
         rows = self.readDetails()
-        if 0 <= int(deleteID) <len(deleteData):
-            deleteData[dataId]= ''
-            file = open(self.name, 'w')
-            for row in rows:
-                file.write(','.join(row)+'\n')
-            file.close()
-            return True
+        print(rows)
+        if 0 <= int(deleteID):
+            if rows[int(deleteID)] in rows:
+                rows[int(deleteID)] == ''
+                file = open(self.name,'w+')
+                file.write(rows[int(deleteID)])
+                # for i in rows:
+                #     file.write(i)
+                file.close()
         return False
 
         
@@ -63,7 +60,6 @@ if musicId and musicBand and musicName is not None:
     musicChild.addDetails([str(musicId), musicName, musicBand])
     print(musicChild.readDetails())
     dataId = int(input("Enter the id you want to edit: "))
-    musicChild.editDetails(dataId)
     data = input("Enter the changes you want: ")
     musicChild.update(data, dataId)
     deleteId = input("Enter the data number you want to delete: ")
